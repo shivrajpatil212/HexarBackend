@@ -85,6 +85,9 @@ export const updateHexarTimelineByIdValidation = celebrate({
     timelineYear: Joi.string().optional().messages({
       'string.empty': 'timelineYear cannot be empty.',
     }),
+    timelineImageUrl: Joi.string().optional().messages({
+      'string.empty': 'timelineImageUrl cannot be empty.',
+    }),
     timelineTitle: Joi.string().optional().messages({
       'string.empty': 'timelineTitle cannot be empty.',
     }),
@@ -102,6 +105,9 @@ export const updateHexarFounderByIdValidation = celebrate({
     }),
   }),
   [Segments.BODY]: Joi.object().keys({
+    founderImageUrl: Joi.string().optional().messages({
+      'string.empty': 'founderImageUrl cannot be empty.',
+    }),
     founderName: Joi.string().optional().messages({
       'string.empty': 'founderName cannot be empty.',
     }),
@@ -119,6 +125,9 @@ export const updateHexarStandOutByIdValidation = celebrate({
     }),
   }),
   [Segments.BODY]: Joi.object().keys({
+    standOutImageUrl: Joi.string().optional().messages({
+      'string.empty': 'standOutImageUrl cannot be empty.',
+    }),
     standOutTitle: Joi.string().optional().messages({
       'string.empty': 'standOutTitle cannot be empty.',
     }),
