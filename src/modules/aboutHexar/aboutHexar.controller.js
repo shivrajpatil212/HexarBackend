@@ -4,6 +4,8 @@ import HexarTimelineModel from "./hexarTimeline.model.js";
 import HexarFounderModel from "./hexarFounder.model.js";
 import HexarStandOutModel from "./hexarStandOut.model.js";
 
+const getBaseUrl = (req) => `${req.protocol}://${req.get('host')}`;
+
 export const addHexarFamily = async (req, res) => {
     try {
         const hexarFamily = new HexarFamilyModel(req.body);
@@ -56,7 +58,8 @@ export const deleteHexarFamilyById = async (req, res) => {
 export const addHexarTimeline = async (req, res) => {
     try {
         const { timelineYear, timelineTitle, timelineDescription } = req.body;
-        const timelineImageUrl = req.file ? `/uploads/timeline/${req.file.filename}` : null;
+        const baseUrl = getBaseUrl(req);
+        const timelineImageUrl = req.file ? `${baseUrl}/uploads/timeline/${req.file.filename}` : null;
         if (!timelineImageUrl) {
             return res.badRequest("timelineImageUrl is required");
         }
@@ -83,8 +86,9 @@ export const updateHexarTimelineById = async (req, res) => {
     try {
         const { id } = req.query;
         const updateData = { ...req.body };
+        const baseUrl = getBaseUrl(req);
         if (req.file) {
-            updateData.timelineImageUrl = `/uploads/timeline/${req.file.filename}`;
+            updateData.timelineImageUrl = `${baseUrl}/uploads/timeline/${req.file.filename}`;
         }
         const updated = await HexarTimelineModel.findByIdAndUpdate(id, updateData, { new: true });
         if (!updated) return res.notFound("Hexar Timeline not found");
@@ -110,7 +114,8 @@ export const deleteHexarTimelineById = async (req, res) => {
 export const addHexarFounder = async (req, res) => {
     try {
         const { founderName, founderDesignation } = req.body;
-        const founderImageUrl = req.file ? `/uploads/founder/${req.file.filename}` : null;
+        const baseUrl = getBaseUrl(req);
+        const founderImageUrl = req.file ? `${baseUrl}/uploads/founder/${req.file.filename}` : null;
         if (!founderImageUrl) {
             return res.badRequest("founderImageUrl is required");
         }
@@ -137,8 +142,9 @@ export const updateHexarFounderById = async (req, res) => {
     try {
         const { id } = req.query;
         const updateData = { ...req.body };
+        const baseUrl = getBaseUrl(req);
         if (req.file) {
-            updateData.founderImageUrl = `/uploads/founder/${req.file.filename}`;
+            updateData.founderImageUrl = `${baseUrl}/uploads/founder/${req.file.filename}`;
         }
         const updated = await HexarFounderModel.findByIdAndUpdate(id, updateData, { new: true });
         if (!updated) return res.notFound("Hexar Founder not found");
@@ -164,7 +170,8 @@ export const deleteHexarFounderById = async (req, res) => {
 export const addHexarStandOut = async (req, res) => {
     try {
         const { standOutTitle, standOutDescription } = req.body;
-        const standOutImageUrl = req.file ? `/uploads/standout/${req.file.filename}` : null;
+        const baseUrl = getBaseUrl(req);
+        const standOutImageUrl = req.file ? `${baseUrl}/uploads/standout/${req.file.filename}` : null;
         if (!standOutImageUrl) {
             return res.badRequest("standOutImageUrl is required");
         }
@@ -191,8 +198,9 @@ export const updateHexarStandOutById = async (req, res) => {
     try {
         const { id } = req.query;
         const updateData = { ...req.body };
+        const baseUrl = getBaseUrl(req);
         if (req.file) {
-            updateData.standOutImageUrl = `/uploads/standout/${req.file.filename}`;
+            updateData.standOutImageUrl = `${baseUrl}/uploads/standout/${req.file.filename}`;
         }
         const updated = await HexarStandOutModel.findByIdAndUpdate(id, updateData, { new: true });
         if (!updated) return res.notFound("Hexar StandOut not found");

@@ -1,10 +1,13 @@
 import BannerModel from "./banner.model.js";
 
+const getBaseUrl = (req) => `${req.protocol}://${req.get('host')}`;
+
 export const addBanner = async (req, res) => {
     try {
         const { bannerTitle, bannerSubTitle } = req.body;
-        const bannerImage = req.files?.bannerImage?.[0] ? `/uploads/banner/${req.files.bannerImage[0].filename}` : null;
-        const bannerBackgroundVideo = req.files?.bannerBackgroundVideo?.[0] ? `/uploads/banner/${req.files.bannerBackgroundVideo[0].filename}` : null;
+        const baseUrl = getBaseUrl(req);
+        const bannerImage = req.files?.bannerImage?.[0] ? `${baseUrl}/uploads/banner/${req.files.bannerImage[0].filename}` : null;
+        const bannerBackgroundVideo = req.files?.bannerBackgroundVideo?.[0] ? `${baseUrl}/uploads/banner/${req.files.bannerBackgroundVideo[0].filename}` : null;
         if (!bannerImage || !bannerBackgroundVideo) {
             return res.badRequest("bannerImage and bannerBackgroundVideo are required");
         }
@@ -31,11 +34,12 @@ export const updateBannerById = async (req, res) => {
     try {
         const { id } = req.query;
         const updateData = { ...req.body };
+        const baseUrl = getBaseUrl(req);
         if (req.files?.bannerImage?.[0]) {
-            updateData.bannerImage = `/uploads/banner/${req.files.bannerImage[0].filename}`;
+            updateData.bannerImage = `${baseUrl}/uploads/banner/${req.files.bannerImage[0].filename}`;
         }
         if (req.files?.bannerBackgroundVideo?.[0]) {
-            updateData.bannerBackgroundVideo = `/uploads/banner/${req.files.bannerBackgroundVideo[0].filename}`;
+            updateData.bannerBackgroundVideo = `${baseUrl}/uploads/banner/${req.files.bannerBackgroundVideo[0].filename}`;
         }
         const updated = await BannerModel.findByIdAndUpdate(id, updateData, { new: true });
         if (!updated) return res.notFound("Banner not found");
